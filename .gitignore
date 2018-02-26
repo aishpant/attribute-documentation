@@ -1,0 +1,10 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Project specific temp files
+description.txt
+sysfs_doc
+
+*.swp
