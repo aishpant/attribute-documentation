@@ -63,6 +63,12 @@ It also tries to collect description from various sources-
 ```
   There's a comment against host\_deviceid here and this can be extracted.
 
+All sysfs attribute declaring macros are located in `macros.txt`. Each row of
+`macros.txt` contains an attribute declaring macro space separated by the
+location of the attribute name in the macro - DEVICE\_ATTR 0. This list is not
+complete. Please send a pull request if you find any that are not in the list.
+
+
 ## Usage
 
 Prerequisites:
@@ -70,9 +76,9 @@ Prerequisites:
 - Python 3
 - Linux Kernel source code
 
-First, clone the project. The make utility needs two options- path to the kernel
-source files or directory which needs documentation, and the path to the kernel
-source.
+First, you need to clone the project. The `make` utility needs two options- path
+to the kernel source files or directory which needs documentation, and the path
+to the kernel source.
 
 ```bash
 make doc FILE=$(source file or directory) KERNEL_PATH=$(path to kernel source)
@@ -88,10 +94,11 @@ The script will fill in the 'Date' and the 'KernelVersion' fields for found
 attributes. The 'Contact' details is prompted for once, and the others 'What' and
 'Description' are prompted for every attribute.
 
-While `make doc` runs, it will create a description.txt file containing possible
+While `make doc` runs, it will create a `description.txt`file containing possible
 descriptions for the attributes. Please refer to it while filling in the
 documentation. The formatted documentation is appended to a file named
-'sysfs\_doc'.
+`sysfs_doc`.
+
 
 ## Contributions
 
@@ -101,9 +108,10 @@ Python 3 and [Coccinelle](http://coccinelle.lip6.fr/).
 
 Some top of the mind tasks are:
 
-- [] spatch runs assuming 4 cores. This should be corrected to match the
+- [ ] spatch runs assuming 4 cores. This should be corrected to match the
   developer's machine
-- [] support for verbose & quiet mode. Some print statements are for debugging
+- [ ] support for verbose & quiet mode. Some print statements are for debugging
   purpose and they should be printed in verbose mode only.
-- [] utilise all cores. The `git log -L` command in doc.py takes a _very_ long
+- [ ] utilise all cores. The `git log -L` command in doc.py takes a _very_ long
   time to run. The script would be much faster if it runs in parallel.
+- [ ] code cleanup. Some for-loops can be replaced by list comprehensions.
