@@ -3,6 +3,13 @@
 This is a helper tool for generating and formatting sysfs attribute
 documentation which is location under `Documentation/ABI`in the kernel source.
 
+From a rough estimate, there are around 2000 attributes that are undocumented in
+the kernel.
+
+<div>
+    <a href="https://plot.ly/~aishpant/1/?share_key=8mG4JmyySLLYjbjTg7Uy62" target="_blank" title="sysfs line plot" style="display: block; text-align: center;"><img src="https://plot.ly/~aishpant/1.png?share_key=8mG4JmyySLLYjbjTg7Uy62" alt="sysfs line plot" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
+</div>
+
 The ABI documentation format looks like the following:
 
 What:          (the full sysfs path of the attribute)  
