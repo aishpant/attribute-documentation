@@ -1,11 +1,11 @@
 from itertools import groupby
 from pprint import pprint
 import os
-import find_attrs
 import argparse
 import operator
 import glob
 import ast
+from sysfs_docgen.find_attrs import generate_scripts
 
 def clean_up(line):
     return ast.literal_eval(line)
@@ -22,10 +22,10 @@ def read_result():
                [result.extend(clean_up(l)) for l in lines]
     return result
 
-def print_attrs(dir_file, kernel_source_path):
-    find_attrs.generate_scripts(dir_file)
+def print_attrs(dir_file):
+    generate_scripts(dir_file)
     attr_tuple = sorted(set(read_result()), key=lambda x: x[2])
-    attr_tuple = list(map(lambda x: (x[1], x[0], os.path.relpath(x[2], kernel_source_path), x[3]), attr_tuple))
+    attr_tuple = list(map(lambda x: (x[1], x[0], x[2], x[3]), attr_tuple))
     ret = ''
     for attr in attr_tuple:
         print (' '.join(attr))
@@ -33,9 +33,11 @@ def print_attrs(dir_file, kernel_source_path):
         ret += '\n'
     return ret
 
+'''
 if __name__ == "__main__":
     import sys
     # argv[1] is the path to the kernel source file or directory which needs
     # documentation
     # argv[2] is the path to the kernel source directory
     print_attrs(sys.argv[1], sys.argv[2])
+'''
