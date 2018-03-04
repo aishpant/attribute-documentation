@@ -104,7 +104,7 @@ abi2doc -f drivers/video/backlight/lp855x_bl.c -o sysfs_doc.txt
 The script will fill in the 'Date' and the 'KernelVersion' fields for found
 attributes. The 'Contact' details is prompted for once, and the others 'What' and
 'Description' are prompted for every attribute. The entered description will be
-following by hints as below.
+followed by hints, as shown in a generated file below.
 
 
 ```
