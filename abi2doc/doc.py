@@ -91,7 +91,6 @@ def print_formatted(fname, what, commit_date, kernel_version, contacts, descript
 
 def get_first_commit(attr, filename, line_num):
     # get the first commit that introduced the line
-    # TODO: run git log -L in parallel
     command = 'git log --pretty=format:\'%h %cd\' --date=format:\'%m/%Y\' -L ' + line_num + ',' + line_num + ':' + filename + ' --reverse'
     output = run(command)
     if output:
