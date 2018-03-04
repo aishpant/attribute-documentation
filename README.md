@@ -76,7 +76,7 @@ Prerequisites:
 - Python 3
 - Linux Kernel source code
 
-abi2doc is available on [PYPI](https://pypi.org/project/abi2doc/0.1/). Install with `pip`:
+abi2doc is available on [PYPI](https://pypi.org/project/abi2doc/). Install with `pip`:
 
 `pip install abi2doc`
 

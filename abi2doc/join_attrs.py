@@ -5,7 +5,7 @@ import argparse
 import operator
 import glob
 import ast
-from sysfs_docgen.find_attrs import generate_scripts
+from abi2doc.find_attrs import generate_scripts
 
 def clean_up(line):
     return ast.literal_eval(line)

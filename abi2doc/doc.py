@@ -8,7 +8,7 @@ import argparse
 import textwrap
 import datetime
 import re
-from sysfs_docgen.join_attrs import print_attrs
+from abi2doc.join_attrs import print_attrs
 
 # clean-up all the generated temporary files
 def remove_temp_files():
