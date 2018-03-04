@@ -1,4 +1,5 @@
 from distutils.version import StrictVersion
+from multiprocessing import Pool
 from tempfile import mkstemp
 from pathlib import Path
 from os import path, fdopen, remove
@@ -88,6 +89,27 @@ def print_formatted(fname, what, commit_date, kernel_version, contacts, descript
     print ('Description:' + description, file = fname)
     print ('\n', file = fname)
 
+def get_first_commit(attr, filename, line_num):
+    # get the first commit that introduced the line
+    # TODO: run git log -L in parallel
+    command = 'git log --pretty=format:\'%h %cd\' --date=format:\'%m/%Y\' -L ' + line_num + ',' + line_num + ':' + filename + ' --reverse'
+    output = run(command)
+    if output:
+        # get the oldest commit
+        res = output.split('\n')[0]
+        commit_hash, date = res.split()
+        return (attr, commit_hash, date)
+
+def run_parallel(attrs_info):
+    pool = Pool()
+    tasks = [(attr.split()[0], attr.split()[2], attr.split()[3]) for attr in attrs_info]
+    results = [pool.apply_async(get_first_commit, t) for t in tasks]
+    attr_commit = {}
+    for result in results:
+        (attr, commit_hash, date) = result.get()
+        attr_commit[attr] = [commit_hash, date]
+    return attr_commit
+
 # Global variables
 attr_description = {}
 
@@ -114,6 +136,8 @@ def document():
     print ("########## Starting processing ##########")
 
     f = open(doc_file, 'w')
+
+    attr_commit = run_parallel(attrs_info)
 
     for attr_info in attrs_info:
         attr, mac, filename, macro_line_num = attr_info.split()
@@ -166,28 +190,23 @@ def document():
 
         # get the first commit that introduced the line
         # TODO: run git log -L in parallel
-        command = 'git log --pretty=format:\'%h %cd\' --date=format:\'%m/%Y\' -L ' + macro_line_num + ',' + macro_line_num + ':' + filename + ' --reverse'
+        commit_hash, date = attr_commit[attr]
+
+        # get the commit message that added the attribute
+        command = 'git log -n 1 --pretty=medium ' + commit_hash
         output = run(command)
+
         if output:
-            # get the oldest commit
-            res = output.split('\n')[0]
-            commit_hash, date = res.split()
+            add_description(attr, output, '%%%%% commit message %%%%%')
 
-            # get the commit message that added the attribute
-            command = 'git log -n 1 --pretty=medium ' + commit_hash
-            output = run(command)
-
-            if output:
-                add_description(attr, output, '%%%%% commit message %%%%%')
-
-            command = 'git tag --contains=' + commit_hash
-            output = run(command)
-            tags = output.split('\n')
-            tags = [tag[1:] for tag in tags if tag.startswith('v') and 'rc' not in tag]
-            # this fails (!!) when the commit is not in a stable kernel version
-            kernel_version = sorted(tags,  key=StrictVersion)[0]
-            doc_list.append([attr, date, kernel_version])
-            print (attr, date, kernel_version)
+        command = 'git tag --contains=' + commit_hash
+        output = run(command)
+        tags = output.split('\n')
+        tags = [tag[1:] for tag in tags if tag.startswith('v') and 'rc' not in tag]
+        # this fails (!!) when the commit is not in a stable kernel version
+        kernel_version = sorted(tags,  key=StrictVersion)[0]
+        doc_list.append([attr, date, kernel_version])
+        print (attr, date, kernel_version)
 
     doc_list = sorted(doc_list, key=lambda x: datetime.datetime.strptime(x[1], '%m/%Y'))
     print ("#################################")

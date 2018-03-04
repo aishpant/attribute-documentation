@@ -159,6 +159,6 @@ Some top of the mind tasks are:
   developer's machine
 - [ ] support for verbose & quiet mode. Some print statements are for debugging
   purpose and they should be printed in verbose mode only.
-- [ ] utilise all cores. The `git log -L` command in doc.py takes a _very_ long
+- [x] utilise all cores. The `git log -L` command in doc.py takes a _very_ long
   time to run. The script would be much faster if it runs in parallel.
 - [ ] code cleanup. Some for-loops can be replaced by list comprehensions.
