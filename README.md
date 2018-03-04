@@ -26,15 +26,15 @@ It also tries to collect description from various sources-
 
 * Commit message that introduced the attribute
 
-* If suppose documentation is present somewhere, plain old grep for the
-  attribute name in the Documentation folder. This is **disabled** right now
-  because this sometimes outputs too many irrelevant results.
+* If documentation is present somewhere, plain old grep for the attribute name
+  in the Documentation folder. This is **disabled** right now because this
+  sometimes outputs too many irrelevant results.
 
 * Comments around show/store functions or the macro.
 
 * From the structure fields that map to the attribute.
 
-  The show functions usually look like this:
+...The show functions usually look like this:
 ```c
         static ssize_t
         port_destid_show(struct device *dev, struct device_attribute *attr,
@@ -48,10 +48,10 @@ It also tries to collect description from various sources-
                         return -ENODEV;
         }
 ```
-  There is a conversion to some driver private struct and then one or many fields from
+...There is a conversion to some driver private struct and then one or many fields from
   it are put in the buffer.
 
-  In the example above, it's a struct of type rio\_mport.
+...In the example above, it's a struct of type rio\_mport.
 ```c
   struct rio_mport {
         ...
@@ -61,7 +61,7 @@ It also tries to collect description from various sources-
         ...
         };
 ```
-  There's a comment against host\_deviceid here and this can be extracted.
+...There's a comment against host\_deviceid here and this can be extracted.
 
 All sysfs attribute declaring macros are located in `macros.txt`. Each row of
 `macros.txt` contains an attribute declaring macro space separated by the
@@ -76,29 +76,76 @@ Prerequisites:
 - Python 3
 - Linux Kernel source code
 
-First, you need to clone the project. The `make` utility needs two options- path
-to the kernel source files or directory which needs documentation, and the path
-to the kernel source.
+abi2doc is available on [PYPI](). Install with `pip`:
+
+`pip install abi2doc`
+
+The library is currently tested against Python versions 3.4+.
 
 ```bash
-make doc FILE=$(source file or directory) KERNEL_PATH=$(path to kernel source)
-make clean # clean temporary & generated files
+usage: abi2doc [-h] -f SOURCE_FILE -o OUTPUT_FILE
+
+Helper for documenting Linux Kernel sysfs attributes
+
+required arguments:
+  -f SOURCE_FILE  linux source file to document
+  -o OUTPUT_FILE  location of the generated sysfs ABI documentation
+
+optional arguments:
+  -h, --help      show this help message and exit
 ```
+
 Example usage:
 
 ```bash
-make doc FILE=~/projects/linux/drivers/video/backlight/lp855x_bl.c KERNEL_PATH=~/projects/linux
+abi2doc -f drivers/video/backlight/lp855x_bl.c -o sysfs_doc.txt
 ```
 
 The script will fill in the 'Date' and the 'KernelVersion' fields for found
 attributes. The 'Contact' details is prompted for once, and the others 'What' and
-'Description' are prompted for every attribute.
+'Description' are prompted for every attribute. The entered description will be
+following by hints as below.
 
-While `make doc` runs, it will create a `description.txt`file containing possible
-descriptions for the attributes. Please refer to it while filling in the
-documentation. The formatted documentation is appended to a file named
-`sysfs_doc`.
 
+```
+What:		/sys/class/backlight/<backlight>/bled_mode
+Date:		Oct, 2012
+KernelVersion:	3.7
+Contact:	dri-devel@lists.freedesktop.org
+Description:
+		(WO) Write to the backlight mapping mode. The backlight current
+		can be mapped for either exponential (value "0") or linear
+		mapping modes (default).
+		--------------------------------
+		%%%%% Hints below %%%%%
+		bled_mode DEVICE_ATTR drivers/video/backlight/lm3639_bl.c 220
+		--------------------------------
+		%%%%% store fn comments %%%%%
+		/* backlight mapping mode */
+		--------------------------------
+		%%%%% commit message %%%%%
+		commit 0f59858d511960caefb42c4535dc73c2c5f3136c
+		Author: G.Shark Jeong <gshark.jeong@gmail.com>
+		Date:   Thu Oct 4 17:12:55 2012 -0700
+
+		    backlight: add new lm3639 backlight driver
+
+		    This driver is a general version for LM3639 backlgiht + flash driver chip
+		    of TI.
+
+		    LM3639:
+		    The LM3639 is a single chip LCD Display Backlight driver + white LED
+		    Camera driver.  Programming is done over an I2C compatible interface.
+		    www.ti.com
+
+		    [akpm@linux-foundation.org: code layout tweaks]
+		    Signed-off-by: G.Shark Jeong <gshark.jeong@gmail.com>
+		    Cc: Richard Purdie <rpurdie@rpsys.net>
+		    Cc: Daniel Jeong <daniel.jeong@ti.com>
+		    Cc: Randy Dunlap <rdunlap@xenotime.net>
+		    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+		    Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+```
 
 ## Contributions
 
