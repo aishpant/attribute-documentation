@@ -3,8 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Project specific temp files
-description.txt
-sysfs_doc
+# Distribution / packaging
+build/
+dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
 
 *.swp

@@ -1,8 +1,8 @@
 import os, glob
-import os.path
 
 def get_macros():
-   with open("macros.txt", "r") as filename:
+    fname = os.path.join(os.path.dirname(__file__), 'macros.txt')
+    with open(fname, "r") as filename:
        # filter commented lines
        return [line for line in filename.readlines() if not line.startswith('#')]
 
@@ -34,7 +34,9 @@ def generate_scripts(dir_file):
     for script in cocci_scripts:
         write_cocci_output(script, dir_file)
 
+'''
 if __name__ == "__main__":
     import sys
     # argv[1] is the path to the kernel source file or directory
     generate_scripts(sys.argv[1])
+'''
