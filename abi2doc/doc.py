@@ -128,6 +128,7 @@ def document():
     doc_file = args.output_file
     doc_list = []
 
+    # make sure everything is clean before starting up
     remove_temp_files()
 
     attrs_info = print_attrs(driver_dir)
@@ -243,3 +244,6 @@ def document():
         print_formatted(f, what, commit_date, kernel_version, contacts,
                 description)
     f.close()
+
+    # clean-up temp cocci files
+    remove_temp_files()
