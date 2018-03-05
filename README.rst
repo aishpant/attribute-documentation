@@ -8,12 +8,11 @@ kernel source code.
 From a `rough estimate`_, there are around 2000 attributes that are
 undocumented in the kernel.
 
-.. raw:: html
-
-   <div>
-       <a href="https://plot.ly/~aishpant/1/?share_key=8mG4JmyySLLYjbjTg7Uy62" target="_blank" title="sysfs line plot" style="display: block; text-align: center;"><img src="https://plot.ly/~aishpant/1.png?share_key=8mG4JmyySLLYjbjTg7Uy62" alt="sysfs line plot" style="max-width: 100%;width: 600px;"  width="600" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-   </div>
-
+.. image:: https://plot.ly/~aishpant/1.png?share_key=8mG4JmyySLLYjbjTg7Uy62
+   :target: https://plot.ly/~aishpant/1/?share_key=8mG4JmyySLLYjbjTg7Uy62
+   :align: center
+   :alt: sysfs line plot
+   :width: 600px
 
 The ABI documentation format looks like the following:
 
