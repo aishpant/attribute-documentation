@@ -1,5 +1,5 @@
 include LICENSE
-include README.md
+include README.rst
 include setup.py
 include abi2doc/macros.txt
 include abi2doc/cocci/*
