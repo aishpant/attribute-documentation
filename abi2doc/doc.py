@@ -1,8 +1,8 @@
 from distutils.version import StrictVersion
-from multiprocessing import Pool
 from tempfile import mkstemp
 from pathlib import Path
 from os import path, fdopen, remove
+import multiprocessing
 import subprocess
 import argparse
 import textwrap
@@ -50,7 +50,7 @@ def replace_cocci(file_path, substr, pattern):
 # get show/store func lines from cocci output
 def get_func_lines(file_path, linux_source_file):
     line_num = {}
-    command = 'spatch -j 4 --very-quiet --sp-file ' + file_path  + ' --dir ' + linux_source_file
+    command = 'spatch -j ' + num_of_cores + ' --very-quiet --sp-file ' + file_path  + ' --dir ' + linux_source_file
     out = run(command)
     if out:
         lines = out.split('\n')
@@ -64,7 +64,7 @@ def add_struct_comments(attr, show_fn, filename, comment=''):
     # print ('show_fn ' + show_fn)
     temp_show_script = replace_cocci(cocci_script, show_fn, 'show_fn')
 
-    command = 'spatch -j 4 --very-quiet --sp-file ' + temp_show_script + ' --dir ' + filename
+    command = 'spatch -j ' + num_of_cores + ' --very-quiet --sp-file ' + temp_show_script + ' --dir ' + filename
     out = run(command)
     if out:
         add_description(attr, out, comment)
@@ -74,7 +74,7 @@ def add_struct_comments(attr, show_fn, filename, comment=''):
         if (len(struct_type) > 0):
             cocci_script = path.join(path.dirname(__file__), 'cocci/match_struct.cocci')
             temp_struct_script = replace_cocci(cocci_script, struct_type[0], 'struct_type')
-            command = 'spatch -j 4 --very-quiet --include-headers --sp-file ' + temp_struct_script + ' --dir .'
+            command = 'spatch -j ' + num_of_cores + ' --very-quiet --include-headers --sp-file ' + temp_struct_script + ' --dir .'
             out = run(command)
             if out:
                 add_description(attr, out)
@@ -100,7 +100,7 @@ def get_first_commit(attr, filename, line_num):
         return (attr, commit_hash, date)
 
 def run_parallel(attrs_info):
-    pool = Pool()
+    pool = multiprocessing.Pool()
     tasks = [(attr.split()[0], attr.split()[2], attr.split()[3]) for attr in attrs_info]
     results = [pool.apply_async(get_first_commit, t) for t in tasks]
     attr_commit = {}
@@ -111,6 +111,7 @@ def run_parallel(attrs_info):
 
 # Global variables
 attr_description = {}
+num_of_cores = str(1)
 
 def document():
     parser = argparse.ArgumentParser(description='Helper for documenting Linux Kernel sysfs attributes')
@@ -126,6 +127,8 @@ def document():
     driver_dir = args.source_file
     doc_file = args.output_file
     doc_list = []
+    global num_of_cores
+    num_of_cores = str(multiprocessing.cpu_count())
 
     # make sure everything is clean before starting up
     remove_temp_files()

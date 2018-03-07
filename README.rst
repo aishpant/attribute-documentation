@@ -168,7 +168,7 @@ scripts written in Python 3 and `Coccinelle`_.
 
 Some top of the mind tasks are:
 
--  [ ] spatch runs assuming 4 cores. This should be corrected to match
+-  [x] spatch runs assuming 4 cores. This should be corrected to match
    the developer's machine
 -  [ ] support for verbose & quiet mode. Some print statements are for
    debugging purpose and they should be printed in verbose mode only.

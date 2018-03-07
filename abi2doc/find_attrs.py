@@ -1,4 +1,5 @@
 import os, glob
+import multiprocessing
 
 def get_macros():
     fname = os.path.join(os.path.dirname(__file__), 'macros.txt')
@@ -9,8 +10,8 @@ def get_macros():
 def write_cocci_output(filename, dir_file):
     #print ('Processing file ' + str(filename))
     # run coccinelle on drivers
-    os.system('spatch -j 4 --very-quiet --sp-file ' + str(filename) + ' --dir ' + dir_file +
-    '>' + '/tmp/out.' + str(os.path.basename(filename)))
+    num_of_cores = str(multiprocessing.cpu_count())
+    os.system('spatch -j ' + num_of_cores + ' --very-quiet --sp-file ' + str(filename) + ' --dir ' + dir_file + '>' + '/tmp/out.' + str(os.path.basename(filename)))
     #print ('########################################################')
 
 def generate_scripts(dir_file):
