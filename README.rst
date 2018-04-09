@@ -165,24 +165,11 @@ Expected time for the scripts to run =
 Contributions
 -------------
 
-Thank you for reading up till here. Contributions are welcome, whether it is in
-the form of code or documentation. This projects consists of scripts written in
-Python 3 and `Coccinelle`_.
-
-
-Some top of the mind tasks are:
-
--  [x] spatch runs assuming 4 cores. This should be corrected to match
-   the developer's machine
--  [ ] support for verbose & quiet mode. Some print statements are for
-   debugging purpose and they should be printed in verbose mode only.
--  [x] utilise all cores. The ``git log -L`` command in doc.py takes a
-   *very* long time to run. The script would be much faster if it runs
-   in parallel.
--  [ ] code cleanup. Some for-loops can be replaced by list
-   comprehensions etc. `flake8` can be useful for finding such issues.
+Contributions are welcome, whether it is in the form of code or documentation.
+Please refer to the `issues`_ tab for places that need help.
 
 .. _install instructions: https://github.com/coccinelle/coccinelle/
 .. _PYPI: https://pypi.org/project/abi2doc/
 .. _Coccinelle: http://coccinelle.lip6.fr/
 .. _rough estimate: https://github.com/aishpant/documentation-scripts/blob/master/result/output.csv
+.. _issues: https://github.com/aishpant/attribute-documentation/issues
