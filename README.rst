@@ -2,11 +2,11 @@ attribute documentation
 -----------------------
 
 `abi2doc` is a helper tool for generating and formatting sysfs attribute
-documentation which is location under ``Documentation/ABI``\  in the
-kernel source code.
+documentation which is location under ``Documentation/ABI``\  in the kernel
+source code.
 
-From a `rough estimate`_, there are around 2000 attributes that are
-undocumented in the kernel.
+From a `rough estimate`_, there are around 2000 attributes that are undocumented
+in the kernel.
 
 .. image:: https://plot.ly/~aishpant/1.png?share_key=8mG4JmyySLLYjbjTg7Uy62
    :target: https://plot.ly/~aishpant/1/?share_key=8mG4JmyySLLYjbjTg7Uy62
@@ -22,19 +22,21 @@ The ABI documentation format looks like the following:
 | Contact: (primary contact)
 | Description: (long description on usage)
 
-`abi2doc` can fill in the '`Date`' and the '`KernelVersion`' fields with
-high accuracy. The '`Contact`' details is prompted for once, and the
-others '`What`' and '`Description`' are prompted on every attribute.
+`abi2doc` can fill in the '`Date`' and the '`KernelVersion`' fields with high
+accuracy. The '`Contact`' details is prompted for once, and the others '`What`'
+and '`Description`' are prompted on every attribute.
 
 It also tries to collect description from various sources-
 
 -  From the commit message that introduced the attribute
 
--  From comments around the attribute show/store functions or the attribute declaring macro.
+-  From comments around the attribute show/store functions or the attribute
+  declaring macro.
 
 -  From the structure fields that map to the attribute.
    
-   For eg. consider the attribute declaring macro `PORT_RO(dest_id)` and its show function `port_destid_show(...)`.
+   For eg. consider the attribute declaring macro `PORT_RO(dest_id)` and its
+   show function `port_destid_show(...)`.
 
   .. code:: c
 
@@ -52,9 +54,12 @@ It also tries to collect description from various sources-
 
 
 
-  The show functions typically contain a conversion to a driver private struct and then one or many fields from it are put in the buffer. 
+  The show functions typically contain a conversion to a driver private struct
+  and then one or many fields from it are put in the buffer. 
 
-  In the example above, the driver private structure is a struct of type `rio_mport` and the attribute `port_id` maps to the field `host_deviceid` in the structure.
+  In the example above, the driver private structure is a struct of type
+  `rio_mport` and the attribute `port_id` maps to the field `host_deviceid` in
+  the structure.
 
   .. code:: c
 
@@ -69,10 +74,9 @@ It also tries to collect description from various sources-
   There's a comment against `host_deviceid` here and this can be extracted.
 
 All sysfs attribute declaring macros are located in ``abi2doc/macros.txt``. Each
-row of `macros.txt` contains an attribute declaring macro space
-separated by the location of the attribute name in the macro -
-`DEVICE_ATTR 0`. This list is not complete. Please send a pull request if
-you find any that are not in the list.
+row of `macros.txt` contains an attribute declaring macro space separated by the
+location of the attribute name in the macro - `DEVICE_ATTR 0`. This list is not
+complete. Please send a pull request if you find any that are not in the list.
 
 Usage
 -----
@@ -108,11 +112,10 @@ Example usage:
 
     abi2doc -f drivers/video/backlight/lp855x_bl.c -o sysfs_doc.txt
 
-The script will fill in the '`Date`' and the '`KernelVersion`' fields for
-found attributes. The '`Contact`' details is prompted for once, and the
-others 'What' and '`Description`' are prompted on every attribute. The
-entered description will be followed by hints, as shown in a generated
-file below.
+The script will fill in the '`Date`' and the '`KernelVersion`' fields for found
+attributes. The '`Contact`' details is prompted for once, and the others 'What'
+and '`Description`' are prompted on every attribute. The entered description
+will be followed by hints, as shown in a generated file below.
 
 ::
 
@@ -161,9 +164,9 @@ Expected time for the scripts to run =
 Contributions
 -------------
 
-Thank you for reading up till here. Contributions are welcome, whether
-it is in the form of code or documentation. This projects consists of
-scripts written in Python 3 and `Coccinelle`_.
+Thank you for reading up till here. Contributions are welcome, whether it is in
+the form of code or documentation. This projects consists of scripts written in
+Python 3 and `Coccinelle`_.
 
 
 Some top of the mind tasks are:
