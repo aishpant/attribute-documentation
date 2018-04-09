@@ -84,12 +84,13 @@ Usage
 Prerequisites:
 
 -  Coccinelle - `install instructions`_
+  spatch will need to be compiled with option `./configure --with-python=python3`
 -  Python 3
 -  Linux Kernel source code
 
-`abi2doc` is available on `PYPI`_. Install with ``pip``:
+`abi2doc` is available on `PYPI`_. Install with ``pip3``:
 
-  ``pip install abi2doc``
+  ``pip3 install abi2doc``
 
 The library is currently tested against Python versions `3.4+`.
 
@@ -181,7 +182,7 @@ Some top of the mind tasks are:
 -  [ ] code cleanup. Some for-loops can be replaced by list
    comprehensions etc. `flake8` can be useful for finding such issues.
 
-.. _install instructions: http://coccinelle.lip6.fr/download.php
+.. _install instructions: https://github.com/coccinelle/coccinelle/
 .. _PYPI: https://pypi.org/project/abi2doc/
 .. _Coccinelle: http://coccinelle.lip6.fr/
 .. _rough estimate: https://github.com/aishpant/documentation-scripts/blob/master/result/output.csv
